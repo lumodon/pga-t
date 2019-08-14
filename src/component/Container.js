@@ -7,13 +7,33 @@ import withStyle from 'react-jss'
 const style = {
   user: {
     padding: 15,
-    margin: 5,
+    margin: 2,
     border: 'solid black 1px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   todo: {
-    padding: 15,
-    margin: 5,
-  }
+    padding: 10,
+    margin: 2,
+    width: '40vw',
+    maxWidth: 400,
+    border: '1px solid #aaa',
+    '& p': {
+      margin: 2,
+    }
+  },
+  userHeader: {
+    fontWeight: 'bolder',
+    textAlign: 'center',
+    margin: '5px auto',
+  },
+  todosContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: '90%',
+  },
 }
 
 class Container extends Component {
@@ -61,14 +81,16 @@ class Container extends Component {
       <div>
         {this.state.users.map(user => (
           <div className={classes.user} key={user.id}>
-            {user.todos.map(comp => (
-              <div className={classes.todo} key={comp.id}>
-                <p className="id">id: {comp.id}</p>
-                <p className="userId">userId: {comp.userId}</p>
-                <p className="title">title: {comp.title}</p>
-                <p className="completed">completed: {String(comp.completed)}</p>
-              </div>
-            ))}
+            <h3 className={classes.userHeader}>User {user.id}</h3>
+            <div className={classes.todosContainer}>
+              {user.todos.map(comp => (
+                <div className={classes.todo} key={comp.id}>
+                  <p className="id">id: {comp.id}</p>
+                  <p className="title">title: {comp.title}</p>
+                  <p className="completed">completed: {String(comp.completed)}</p>
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
