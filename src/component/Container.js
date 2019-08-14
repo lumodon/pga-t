@@ -35,7 +35,6 @@ class Container extends Component {
           return acc
         }, {})
 
-        console.log(users)
         this.setState({
           todos: incomlpeteTodos,
           users: Object.values(users),
@@ -44,7 +43,6 @@ class Container extends Component {
   }
 
   render() {
-    console.log(JSON.stringify(this.state.users,0,2))
     return (
       <div>
         {this.state.users.map(user => (
