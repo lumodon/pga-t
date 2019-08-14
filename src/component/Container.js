@@ -7,7 +7,7 @@ import withStyle from 'react-jss'
 const style = {
   user: {
     padding: 15,
-    margin: 2,
+    margin: '10px 2px',
     border: 'solid black 1px',
     display: 'flex',
     flexDirection: 'column',
@@ -32,8 +32,23 @@ const style = {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'center',
     width: '90%',
   },
+  completionToggleBtn: {
+    backgroundColor: '#b3c8ff',
+    borderRadius: 8,
+    color: '#3a85f1',
+    fontSize: '2em',
+    minWidth: 300,
+    width: '10vw',
+    margin: '10 auto',
+  },
+  page: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  }
 }
 
 class Container extends Component {
@@ -42,6 +57,7 @@ class Container extends Component {
     this.state = {
       todos: [],
       users: [],
+      completed: false,
     }
   }
 
@@ -55,7 +71,7 @@ class Container extends Component {
       .then(todos => {
         const incomlpeteTodos = todos
           .filter(todo =>
-            !todo.completed
+            todo.completed === this.state.completed
             && todo.userId < 5
           )
 
@@ -75,10 +91,22 @@ class Container extends Component {
       })
   }
 
+  handleCompletionToggle = () => {
+    this.setState({
+      completed: !this.state.completed,
+    })
+  }
+
   render() {
     const { classes } = this.props
     return (
-      <div>
+      <div className={classes.page}>
+        <button
+          onClick={this.handleCompletionToggle}
+          className={classes.completionToggleBtn}
+        >
+          Show {this.state.completed ? 'Incompleted' : 'Completed'}
+        </button>
         {this.state.users.map(user => (
           <div className={classes.user} key={user.id}>
             <h3 className={classes.userHeader}>User {user.id}</h3>
