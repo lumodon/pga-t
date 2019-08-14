@@ -69,32 +69,40 @@ class Container extends Component {
     })
       .then(res => res.json())
       .then(todos => {
-        const incomlpeteTodos = todos
-          .filter(todo =>
-            todo.completed === this.state.completed
-            && todo.userId < 5
-          )
-
-        const users = incomlpeteTodos.reduce((acc, todo) => {
-          const userId = Number(todo.userId)
-          acc[userId] = {
-            id: userId,
-            todos: [...(acc[userId] && acc[userId].todos || []), todo]
-          }
-          return acc
-        }, {})
-
         this.setState({
-          todos: incomlpeteTodos,
-          users: Object.values(users),
+          todos,
         })
+        this.generateUsers(false)
       })
   }
 
-  handleCompletionToggle = () => {
+  generateUsers = (viewCompleted) => {
+    const incomlpeteTodos = this.state.todos
+      .filter(todo =>
+        todo.completed === viewCompleted
+        && todo.userId < 5
+      )
+
+    const users = incomlpeteTodos.reduce((acc, todo) => {
+      const userId = Number(todo.userId)
+      acc[userId] = {
+        id: userId,
+        todos: [...(acc[userId] && acc[userId].todos || []), todo]
+      }
+      return acc
+    }, {})
+
     this.setState({
-      completed: !this.state.completed,
+      users: Object.values(users),
     })
+  }
+
+  handleCompletionToggle = () => {
+    const newCompleted = !this.state.completed
+    this.setState({
+      completed: newCompleted,
+    })
+    this.generateUsers(newCompleted)
   }
 
   render() {
