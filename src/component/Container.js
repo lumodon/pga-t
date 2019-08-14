@@ -47,8 +47,8 @@ class Container extends Component {
     console.log(JSON.stringify(this.state.users,0,2))
     return (
       <div>
-        {this.state.users.map(user =>
-          <div key={user.userId}>
+        {this.state.users.map(user => (
+          <div key={user.id}>
             {user.todos.map(comp => (
               <div key={comp.id}>
                 <p className="id">id: {comp.id}</p>
@@ -58,7 +58,7 @@ class Container extends Component {
               </div>
             ))}
           </div>
-        )}
+        ))}
       </div>
     )
   }
