@@ -6,6 +6,7 @@
         "regenerator": true
       }
     ],
+    ["@babel/plugin-proposal-class-properties"],
     ["@babel/plugin-syntax-dynamic-import"],
     ["@babel/plugin-transform-react-jsx-source"]
   ]

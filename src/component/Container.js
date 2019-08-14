@@ -7,7 +7,7 @@ import withStyle from 'react-jss'
 const style = {
   user: {
     padding: 15,
-    margin: 2,
+    margin: '10px 2px',
     border: 'solid black 1px',
     display: 'flex',
     flexDirection: 'column',
@@ -32,8 +32,23 @@ const style = {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'center',
     width: '90%',
   },
+  completionToggleBtn: {
+    backgroundColor: '#b3c8ff',
+    borderRadius: 8,
+    color: '#3a85f1',
+    fontSize: '2em',
+    minWidth: 300,
+    width: '10vw',
+    margin: '10 auto',
+  },
+  page: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  }
 }
 
 class Container extends Component {
@@ -42,6 +57,7 @@ class Container extends Component {
     this.state = {
       todos: [],
       users: [],
+      completed: false,
     }
   }
 
@@ -53,32 +69,52 @@ class Container extends Component {
     })
       .then(res => res.json())
       .then(todos => {
-        const incomlpeteTodos = todos
-          .filter(todo =>
-            !todo.completed
-            && todo.userId < 5
-          )
-
-        const users = incomlpeteTodos.reduce((acc, todo) => {
-          const userId = Number(todo.userId)
-          acc[userId] = {
-            id: userId,
-            todos: [...(acc[userId] && acc[userId].todos || []), todo]
-          }
-          return acc
-        }, {})
-
         this.setState({
-          todos: incomlpeteTodos,
-          users: Object.values(users),
+          todos,
         })
+        this.generateUsers(false)
       })
+  }
+
+  generateUsers = (viewCompleted) => {
+    const incomlpeteTodos = this.state.todos
+      .filter(todo =>
+        todo.completed === viewCompleted
+        && todo.userId < 5
+      )
+
+    const users = incomlpeteTodos.reduce((acc, todo) => {
+      const userId = Number(todo.userId)
+      acc[userId] = {
+        id: userId,
+        todos: [...(acc[userId] && acc[userId].todos || []), todo]
+      }
+      return acc
+    }, {})
+
+    this.setState({
+      users: Object.values(users),
+    })
+  }
+
+  handleCompletionToggle = () => {
+    const newCompleted = !this.state.completed
+    this.setState({
+      completed: newCompleted,
+    })
+    this.generateUsers(newCompleted)
   }
 
   render() {
     const { classes } = this.props
     return (
-      <div>
+      <div className={classes.page}>
+        <button
+          onClick={this.handleCompletionToggle}
+          className={classes.completionToggleBtn}
+        >
+          Show {this.state.completed ? 'Incompleted' : 'Completed'}
+        </button>
         {this.state.users.map(user => (
           <div className={classes.user} key={user.id}>
             <h3 className={classes.userHeader}>User {user.id}</h3>
