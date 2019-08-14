@@ -2,19 +2,27 @@
 // cc: bsubedi@pgahq.com
 
 import React, { Component } from 'react'
-import withStyle from 'react-jss'
+import { createUseStyles } from 'react-jss'
 
-const style = {
+const useStyles = createUseStyles({
   user: {
-    padding: 15,
-    margin: 5,
-    border: 'solid black 1px',
+    color: 'green',
+    margin: {
+      // jss-plugin-expand gives more readable syntax
+      top: 5, // jss-plugin-default-unit makes this 5px
+      right: 0,
+      bottom: 0,
+      left: '1rem'
+    },
+    '& span': {
+      // jss-plugin-nested applies this to a child span
+      fontWeight: 'bold' // jss-plugin-camel-case turns this into 'font-weight'
+    }
   },
   todo: {
-    padding: 15,
-    margin: 5,
+    fontStyle: 'italic'
   }
-}
+})
 
 class Container extends Component {
   constructor(props) {
@@ -56,7 +64,7 @@ class Container extends Component {
   }
 
   render() {
-    const { classes } = this.props
+    const classes = useStyles()
     return (
       <div>
         {this.state.users.map(user => (
@@ -88,7 +96,7 @@ class Container extends Component {
 
  */
 
-export default withStyle(style)(Container)
+export default Container
 /*
 Inside React, make call to https://jsonplaceholder.typicode.com/todos to retrieve 100 todos with shape
 { userId, id , title, completed }
