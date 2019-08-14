@@ -2,6 +2,19 @@
 // cc: bsubedi@pgahq.com
 
 import React, { Component } from 'react'
+import withStyle from 'react-jss'
+
+const style = {
+  user: {
+    padding: 15,
+    margin: 5,
+    border: 'solid black 1px',
+  },
+  todo: {
+    padding: 15,
+    margin: 5,
+  }
+}
 
 class Container extends Component {
   constructor(props) {
@@ -43,12 +56,13 @@ class Container extends Component {
   }
 
   render() {
+    const { classes } = this.props
     return (
       <div>
         {this.state.users.map(user => (
-          <div key={user.id}>
+          <div className={classes.user} key={user.id}>
             {user.todos.map(comp => (
-              <div key={comp.id}>
+              <div className={classes.todo} key={comp.id}>
                 <p className="id">id: {comp.id}</p>
                 <p className="userId">userId: {comp.userId}</p>
                 <p className="title">title: {comp.title}</p>
@@ -74,7 +88,7 @@ class Container extends Component {
 
  */
 
-export default Container
+export default withStyle(style)(Container)
 /*
 Inside React, make call to https://jsonplaceholder.typicode.com/todos to retrieve 100 todos with shape
 { userId, id , title, completed }
