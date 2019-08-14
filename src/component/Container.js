@@ -28,11 +28,13 @@ class Container extends Component {
 
         const users = incomlpeteTodos.reduce((acc, todo) => {
           const userId = Number(todo.userId)
-          acc.
+          acc[userId] = {
+            id: userId,
+            todos: [...(acc[userId] && acc[userId].todos || []), todo]
+          }
           return acc
-        }, []]
+        }, {})
 
-        console.log(users)
         this.setState({
           todos: incomlpeteTodos,
           users: Object.values(users),
@@ -41,12 +43,11 @@ class Container extends Component {
   }
 
   render() {
-    console.log(JSON.stringify(this.state.users,0,2))
     return (
       <div>
-        {this.state.users.map(user =>
-          <div key={user.userId}>
-            {user.map(comp => (
+        {this.state.users.map(user => (
+          <div key={user.id}>
+            {user.todos.map(comp => (
               <div key={comp.id}>
                 <p className="id">id: {comp.id}</p>
                 <p className="userId">userId: {comp.userId}</p>
@@ -55,7 +56,7 @@ class Container extends Component {
               </div>
             ))}
           </div>
-        )}
+        ))}
       </div>
     )
   }
